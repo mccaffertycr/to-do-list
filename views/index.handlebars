@@ -1,15 +1,24 @@
-<div class="container">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="input-group mb-3">
+              <input class="form-control" type="text" name="todo_desc" id="todo-desc" placeholder="enter a task">
+                <div class="input-group-append">
+                  <button type="submit" class="new-todo btn btn-primary">+</button>
+                </div>
+            </div>
+          {{!-- <input type="text" name="todo_desc" id="todo-desc" placeholder="enter a task">
+              <button type="submit" class="new-todo btn-light">+</button> --}}
+        </div>
+    </div>
     <div class="row">
         <div class="col">
-            <input type="text" name="todo-desc" id="todo-desc" placeholder="enter a task">
-            <input type="submit" class="new-todo btn-light">
-            <br>
             <h1>to do:</h1>
             <ul class="todo list-group">
             {{#each todos}} 
                 {{#unless this.completed}}
                   <li class="todo{{this.id}} list-group-item" data-id={{this.id}}>{{this.todo_desc}}
-                    <button class="btn-primary done" data-id={{this.id}}>x</button>
+                    <button class="btn btn-success done" data-id={{this.id}}>✓</button>
                   </li> 
                 {{/unless}} 
             {{/each}}
@@ -20,7 +29,9 @@
             <ul class="completed list-group">
             {{#each todos}} 
                 {{#if this.completed}}
-                  <li class="todo{{this.id}} list-group-item" data-id={{this.id}}>{{this.todo_desc}}</li> 
+                  <li class="todo{{this.id}} list-group-item" data-id={{this.id}}>{{this.todo_desc}}
+                    <button class="btn btn-danger delete" data-id={{this.id}}>x</button>
+                  </li> 
                 {{/if}} 
             {{/each}}
             </ul>
@@ -32,33 +43,48 @@
 
     $(document).on('click', '.new-todo', function(e) {
         e.preventDefault();
-        var todo = $('#todo-desc').val();
+        var todo_desc = $('#todo-desc').val();
         $.ajax({
             url: '/',
             method: 'post',
-            data: { todo_desc: todo, completed: 0 },
+            data: { todo_desc: todo_desc, completed: 0 },
             success: function(res) {
                 $('.todo').append(
                     `<li class="todo${res[1]} list-group-item" data-id=${res[1]}>${res[0].todo_desc}
-                        <button class="devour btn-success" data-id=${res[1]}>✓</button>
+                        <button class="btn done btn-success" data-id=${res[1]}>✓</button>
                     </li>`
                 );
             }
         });
-        $('#burger-name').val('');
+        $('#todo-desc').val('');
     });
 
-    $(document).on('click', '.devour', function(e) {
+    $(document).on('click', '.done', function(e) {
         var id = $(this).data('id');
         $.ajax({
             url: '/update/' + id,
             method: 'put',
-            data: { id: id, devoured: 1 },
+            data: { id: id, completed: 1 },
             success: function(res) {
-                var eaten = $(`.burger${id}`);
-                eaten.remove();
-                eaten.children().remove();
-                $('.eaten').append(eaten);                
+                var completed = $(`.todo${id}`);
+                completed.remove();
+                completed.children().remove();
+                completed.append(
+                    `<button class="btn btn-danger delete" data-id=${this.id}>x</button>`
+                )
+                $('.completed').append(completed);                
+            }
+        });
+    });
+
+    $(document).on('click', '.delete', function(e) {
+        var id = $(this).data('id');
+        $.ajax({
+            url: '/delete/' + id,
+            method: 'delete',
+            data: { id: id },
+            success: function(res) {
+                $(`.todo${id}`).remove();
             }
         });
     });

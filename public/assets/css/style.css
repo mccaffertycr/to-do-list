@@ -1,6 +1,6 @@
-/* html, body {
-    height: 100%;
-} */
+html, body {
+    min-height: 100%;
+}
 
 body {
     background: url(../images/sky_bg_1.jpg) no-repeat;
@@ -8,29 +8,14 @@ body {
     font-family: 'Space Mono', monospace;
     overflow: none;
     color: white;
-    /* width: 100%; */
-    /* height: 100%; */
-    /* display: grid;
-    grid-template-columns: 60% 40%;
-    grid-template-rows: 20% 80%; */
+    letter-spacing: .05rem;
 }
 
-.item-rmv {
-    text-decoration: none;
-}
-/* #addtodo {
-    grid-column: 1;
-    grid-row: 1;
+ul, li {
+    color: black;
 }
 
-#todolist {
-    grid-column: 1;
-    grid-row: 2;
+#todo-list {
+    width: 20%;
 }
 
-button {
-    font-family: 'Space Mono';
-}
-.done {
-    text-decoration: line-through; */
-/* } */
