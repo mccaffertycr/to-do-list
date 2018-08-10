@@ -2,7 +2,7 @@
 
 ## Overview
 Simple to-do app built with Node / Express / Handlebars / MySQL. The app allows you to add new to dos, check them off as completed and clear them from the page.
-* live-demo: 
+* live-demo: https://git.heroku.com/zen-todo.git
 
 ## To Install
 * git clone the repository - https://github.com/mccaffertycr/to-do-list
